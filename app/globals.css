@@ -1,15 +1,30 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: var(--font-inter), "system-ui", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif";
+  --font-display: var(--font-montserrat), "system-ui", sans-serif;
+  --color-brand-blue-deep: #003366;
+  --color-brand-blue-accent: #0055AA;
+  --color-brand-blue-soft: #F0F7FF;
+  --color-brand-slate: #64748B;
+  --color-brand-dark: #0F172A;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  scroll-behavior: smooth;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --brand-blue: #003366;
+  --brand-accent: #0055aa;
+  --brand-light: #f8fafc;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -20,7 +35,91 @@
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+@layer components {
+  .glass {
+    @apply bg-white/80 backdrop-blur-md border border-white/30 dark:bg-zinc-950/50 dark:border-white/10;
+  }
+  
+  .btn-primary {
+    @apply bg-brand-blue-deep text-white py-3 px-8 rounded-lg font-semibold transition-all hover:bg-brand-blue-accent hover:shadow-xl active:scale-95 shadow-md;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-brand-blue-deep text-brand-blue-deep py-3 px-8 rounded-lg font-semibold transition-all hover:bg-brand-blue-deep hover:text-white active:scale-95 shadow-sm;
+  }
+
+  .nav-link {
+    @apply text-sm font-semibold text-zinc-600 hover:text-brand-blue-deep dark:text-zinc-400 dark:hover:text-white transition-colors py-2 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-brand-blue-accent after:transition-all hover:after:w-full;
+  }
+
+  .heading-gradient {
+    @apply bg-clip-text text-transparent bg-linear-to-r from-brand-blue-deep via-brand-blue-accent to-brand-blue-deep dark:from-white dark:to-zinc-500;
+  }
+
+  .card-hover {
+    @apply transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,45,98,0.1)] hover:-translate-y-2 border border-zinc-100 dark:border-zinc-800 rounded-xl overflow-hidden bg-white dark:bg-zinc-900;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounceSlow {
+  0%, 100% { transform: translateY(-5%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+  50% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-bounce-slow {
+  animation: bounceSlow 3s infinite;
+}
+
+@keyframes slowZoom {
+  0% { transform: scale(1.05); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1.05); }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-slow-zoom {
+  animation: slowZoom 30s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 6s ease-in-out 3s infinite;
+}
+
+.animate-delay-100 { animation-delay: 0.1s; }
+.animate-delay-200 { animation-delay: 0.2s; }
+.animate-delay-300 { animation-delay: 0.3s; }
